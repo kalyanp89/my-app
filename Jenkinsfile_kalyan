@@ -1,0 +1,29 @@
+
+pipeline {
+    agent {
+  label 'Linux-agent1'
+  }
+
+    environment {
+        PATH="${getmaven()}:${PATH}"
+    }
+    stages{
+        stage("Git Checkout") {
+            steps{
+                git 'https://github.com/kalyanp89/my-app.git'
+            }
+        }
+        stage("Maven Buils"){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+    }
+}
+
+
+// 
+def getmaven(){
+    def mvnhome = tool name: 'maven3', type: 'maven'
+    return "${mvnhome}/bin"
+}

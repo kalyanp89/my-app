@@ -1,8 +1,5 @@
-
 pipeline {
-    agent {
-  label 'Linux-agent1'
-  }
+    agent any
 
     environment {
         PATH="${getmaven()}:${PATH}"
@@ -10,12 +7,18 @@ pipeline {
     stages{
         stage("Git Checkout") {
             steps{
-                git 'https://github.com/kalyanp89/my-app.git'
+                git 'https://github.com/kalyanp89/myweb'
             }
         }
-        stage("Maven Buils"){
+        stage("Maven Build"){
             steps{
                 sh "mvn clean package"
+            }
+        }
+        stage("Deploy-TO-DevJenkins-server"){
+            steps{
+                sh 'docker build . -t kchakravarthy/my-app:1.0'
+                sh 'docker run -p 8080:8080 -d --name my-app kchakravarthy/my-app:1.0'
             }
         }
     }

@@ -19,6 +19,7 @@ pipeline {
             steps{
                 sh 'docker build . -t kchakravarthy/my-app:1.0'
                 sh 'docker run -p 8030:8030 -d --name my-app kchakravarthy/my-app:1.0'
+                sh 'echo Testing'
             }
         }
     }
